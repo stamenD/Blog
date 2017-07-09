@@ -17,12 +17,11 @@
   <% @allposts.reverse.each do |e| %>
   <center>
   <%if e.isActive == 1%>
-    <b>"published at"</b><br>
-    <b>"subject"</b><br>
-    <b>Tags:</b><br>
+    <b>published at</b><br>
+    <b>subject</b><br>
     <img src=<%= e.imagePath%> style="width:128px;height:128px;"><br>
         <form action=<%="/posts/"+e.id.to_s%> method="get" enctype="multipart/form-data"> 
-        <button type="submit" class="w3-button w3-ripple w3-yellow w3-small"><b><%=I18n.t("Read") %></b></button> 
+        <button type="submit" class="w3-button w3-ripple w3-yellow w3-small"><b>Read</b></button> 
         </form> 
     </center>
 <hr>
