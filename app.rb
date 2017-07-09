@@ -4,6 +4,8 @@ require "thin"
 require "sinatra/flash"
 
 require_relative "models/post"
+require_relative "models/tag"
+require_relative "models/tagging"
 require_relative "routes/main"
 configure do
   enable :sessions

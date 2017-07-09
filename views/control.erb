@@ -8,7 +8,21 @@
   <form action="/createPost" method="get" enctype="multipart/form-data">
      <button class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit">create new post </button> 
   </form> 
-
+<!-- Тагове  -->
+<i>tags</i>
+<table>
+  <tr>
+    <form action="/tag/" method="get" enctype="multipart/form-data"> 
+      <button type="submit" class="w3-tag w3-round w3-green w3-border w3-border-white"><b>all</b></button> 
+    </form>
+    <% Tag.all.select{ |e| e.posts.any? { |p| p.isActive == 1 }}.each do |e|%>
+      <form action=<%="/tag/"+e.name.to_s%> method="get" enctype="multipart/form-data"> 
+        <button type="submit" class="w3-tag w3-teal" style="transform:rotate(-5deg)"><%= e.name %></button>
+       </form>
+    <% end %>
+  </tr>
+</table>
+<!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->    
 <!-- ПУБЛИКАЦИИТЕ -->
 
 <% if @allposts.empty? %>

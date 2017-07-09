@@ -3,6 +3,7 @@ get "/createPost" do
 end 
 
 post "/upload" do 
+  user = session[:loginUser]
   newPost = Post.create subject: params[:subject], theme:params[:theme] , published: DateTime.now ,isActive: 1
   if params['pic']
     extension=params['pic'][:filename].split('.')[-1]
@@ -15,6 +16,7 @@ post "/upload" do
     imageName = "default.gif"
   end
     newPost.imagePath = imageName
+    newPost.all_tags = params[:tags]
     newPost.save
 
   if newPost.save
@@ -22,6 +24,5 @@ post "/upload" do
   else
     flash[:error] = "Съобщението съдържа грешки: #{newPost.errors.full_messages.to_sentence}"
   end
-
   redirect '/'
 end

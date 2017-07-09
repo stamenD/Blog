@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170709110123) do
+ActiveRecord::Schema.define(version: 20170709124213) do
 
   create_table "posts", force: :cascade do |t|
     t.string   "subject",   null: false
@@ -18,6 +18,17 @@ ActiveRecord::Schema.define(version: 20170709110123) do
     t.string   "imagePath"
     t.integer  "isActive"
     t.datetime "published"
+  end
+
+  create_table "taggings", force: :cascade do |t|
+    t.integer "post_id"
+    t.integer "tag_id"
+    t.index ["post_id"], name: "index_taggings_on_post_id"
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
   end
 
 end
