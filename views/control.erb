@@ -1,0 +1,32 @@
+<body style="background-color:#A852FF;">
+                                                                               
+  <div class="w3-bar w3-green"> 
+    <p class="w3-bar-item" "><b>"wellcome"!</b></p><br>
+  </div>
+
+
+  <form action="/createPost" method="get" enctype="multipart/form-data">
+     <button class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit">create new post </button> 
+  </form> 
+
+<!-- ПУБЛИКАЦИИТЕ -->
+
+<% if @allposts.empty? %>
+  <i>doesn't exist posts</i>
+<% else %>
+  <% @allposts.reverse.each do |e| %>
+  <center>
+  <%if e.isActive == 1%>
+    <b>"published at"</b><br>
+    <b>"subject"</b><br>
+    <b>Tags:</b><br>
+    <img src=<%= e.imagePath%> style="width:128px;height:128px;"><br>
+        <form action=<%="/posts/"+e.id.to_s%> method="get" enctype="multipart/form-data"> 
+        <button type="submit" class="w3-button w3-ripple w3-yellow w3-small"><b><%=I18n.t("Read") %></b></button> 
+        </form> 
+    </center>
+<hr>
+  <%end%>
+  <%end%> 
+<%end%>
+</body>
