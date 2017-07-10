@@ -2,6 +2,11 @@ get "/createPost" do
   erb :createPost
 end 
 
+get "/posts/:readPost" do
+  @receiveID = params[:readPost]
+  erb :readPost
+end 
+
 post "/upload" do 
   user = session[:loginUser]
   newPost = Post.create subject: params[:subject], theme:params[:theme] , published: DateTime.now ,isActive: 1

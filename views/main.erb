@@ -1,17 +1,39 @@
 <body style="background-color:#A852FF;">
       
- <div class="w3-bar w3-green"> 
+<%= session.to_a %>
+<!-- Ако си логнат  -->
+
+<%if session[:loginUser] %>
+  <div class="w3-bar w3-green"> 
+    <p class="w3-bar-item" "><b>wellcome, <%= session[:loginUser].username %>!</b></p><br>
+    <%if session[:loginUser].isAdmin == 1%>   
+      <form action="/createPost" method="get" enctype="multipart/form-data">
+        <button class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit">reate new post</button> 
+      </form> 
+    <%end%>
+
+    <form action="/logout" method="get" enctype="multipart/form-data">
+      <button class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit">logout</button> 
+    </form> 
+  </div>
+
+
+<!-- Ако не си логнат  -->
+<%else%>  
+  <div class="w3-bar w3-green"> 
     <p class="w3-bar-item" "><b>wellcome!</b></p><br>
+
+    <form action="/login" method="get" enctype="multipart/form-data">
+      <button class="w3-right w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit">login</button> 
+    </form>
 
     <form action="/register" method="get" enctype="multipart/form-data">
       <button class="w3-right w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small" type="submit">create account</button> 
     </form>
- </div>
+  </div>
+<%end %>
 
 
-  <form action="/createPost" method="get" enctype="multipart/form-data">
-     <button class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit">create new post </button> 
-  </form> 
 <!-- Тагове  -->
 <i>tags</i>
 <table>
@@ -26,6 +48,22 @@
     <% end %>
   </tr>
 </table>
+
+
+<!-- Сортировки  -->
+<i>sort by:</i>     
+<table>
+  <tr>
+    <form action="/sort/comments_number" method="get" enctype="multipart/form-data"> 
+      <button class="w3-btn w3-yellow w3-border w3-round-large" type="submit">amount of comments</button> 
+    </form>
+  
+    <form action="/sort/published" method="get" enctype="multipart/form-data"> 
+      <button class="w3-btn w3-yellow w3-border w3-round-large" type="submit">published</button> 
+    </form>
+  </tr>
+</table>
+
 <!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->    
 <!-- ПУБЛИКАЦИИТЕ -->
 
@@ -35,8 +73,8 @@
   <% @allposts.reverse.each do |e| %>
   <center>
   <%if e.isActive == 1%>
-    <b>published at</b><br>
-    <b>subject</b><br>
+    <b>published at</b><%= e.published%><br>
+    <b>subject</b><%= e.subject%><br>
     <img src=<%= e.imagePath%> style="width:128px;height:128px;"><br>
         <form action=<%="/posts/"+e.id.to_s%> method="get" enctype="multipart/form-data"> 
         <button type="submit" class="w3-button w3-ripple w3-yellow w3-small"><b>Read</b></button> 
