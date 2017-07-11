@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170709131040) do
+ActiveRecord::Schema.define(version: 20170711155921) do
+
+  create_table "comments", force: :cascade do |t|
+    t.text     "content"
+    t.datetime "published"
+    t.integer  "post_id"
+    t.integer  "user_id"
+    t.index ["post_id"], name: "index_comments_on_post_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
 
   create_table "posts", force: :cascade do |t|
     t.string   "subject",   null: false
@@ -18,6 +27,8 @@ ActiveRecord::Schema.define(version: 20170709131040) do
     t.string   "imagePath"
     t.integer  "isActive"
     t.datetime "published"
+    t.integer  "user_id"
+    t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "taggings", force: :cascade do |t|

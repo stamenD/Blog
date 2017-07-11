@@ -5,7 +5,9 @@ class CreatePosts < ActiveRecord::Migration[5.0]
   	  t.text :theme , null: false
   	  t.string :imagePath
   	  t.integer :isActive
-  	  t.datetime :published	  
+  	  t.datetime :published
+  	  
+      t.belongs_to :user 	  
   	end
   end
 end

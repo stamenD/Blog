@@ -8,7 +8,7 @@
     <p class="w3-bar-item" "><b>wellcome, <%= session[:loginUser].username %>!</b></p><br>
     <%if session[:loginUser].isAdmin == 1%>   
       <form action="/createPost" method="get" enctype="multipart/form-data">
-        <button class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit">reate new post</button> 
+        <button class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit">Create new post</button> 
       </form> 
     <%end%>
 
@@ -67,18 +67,47 @@
 <!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->    
 <!-- ПУБЛИКАЦИИТЕ -->
 
+<h4>(with tag : 
+  <% if @showOnly == "" || !@showOnly%>
+    it's not specifield
+  <%else @showOnly%>
+    <%= @showOnly%>
+  <% end %>)             
+</h4><hr>
+
 <% if @allposts.empty? %>
   <i>doesn't exist posts</i>
 <% else %>
   <% @allposts.reverse.each do |e| %>
   <center>
-  <%if e.isActive == 1%>
-    <b>published at</b><%= e.published%><br>
-    <b>subject</b><%= e.subject%><br>
+  <%if e.isActive == 1 || (e.isActive == 0  && (session[:loginUser]  && session[:loginUser].isAdmin==1) )%>
+    <%if e.isActive == 0%> <span style="color: yellow"><b>It's not active!</b></span> <%end%><br>
+    <b>published at:</b><%= e.published %><br>
+    <b>subject:</b><%= e.subject%><br>
+    <b>Tags:</b><%= e.all_tags %><br>
     <img src=<%= e.imagePath%> style="width:128px;height:128px;"><br>
         <form action=<%="/posts/"+e.id.to_s%> method="get" enctype="multipart/form-data"> 
         <button type="submit" class="w3-button w3-ripple w3-yellow w3-small"><b>Read</b></button> 
-        </form> 
+        </form>
+    
+    <%if session[:loginUser]  && session[:loginUser].isAdmin==1 %>
+      <table>
+      <tr>
+        <form action=<%="/editPost/"+e.id.to_s%> method="get" enctype="multipart/form-data"> 
+        <button type="submit" class="w3-button w3-ripple w3-green w3-small"><b>edit</b></button> 
+        </form>
+    
+        <form action=<%="/deletePost/"+e.id.to_s%> method="get" enctype="multipart/form-data"> 
+        <button type="submit" class="w3-button w3-ripple w3-green w3-small"><b>delete</b></button> 
+        </form>
+    
+        <form action=<%="/changePostStatus/"+e.id.to_s%> method="get" enctype="multipart/form-data"> 
+        <button type="submit" class="w3-button w3-small w3-ripple w3-green"><b>changeStatus</b></button> 
+        </form>
+    
+      </tr>  
+      </table>  
+    <%end%>  
     </center>
 <hr>
   <%end%>

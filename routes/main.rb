@@ -1,5 +1,6 @@
-require_relative "post"
 require_relative "account"
+require_relative "post"
+
 
 get '/' do
   @sortBy = if !session[:sort] then :id else session[:sort].to_sym end

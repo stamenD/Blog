@@ -1,10 +1,22 @@
+require_relative 'tagging'
+require_relative 'tag'
+require_relative 'comment'
+require_relative 'user'
+
 class Post < ActiveRecord::Base
   validates :theme, presence: true
+  
   has_many :taggings , dependent: :destroy
+  has_many :comments , dependent: :destroy
   has_many :tags, through: :taggings
- 
+  belongs_to :user
+
   def changeStutus
     self.isActive = if self.isActive == 1 then 0 else 1 end
+  end
+
+  def comments_number
+    self.comments.size
   end
 
   def all_tags= names
@@ -18,7 +30,8 @@ class Post < ActiveRecord::Base
   def self.tagged_with(name)
     Tag.find_by_name(name).posts
   end
-    def print
+
+  def print
     str1 = (CGI.escapeHTML self.theme).to_s
     str2 = str1.dup
     

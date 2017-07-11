@@ -1,9 +1,11 @@
 require 'bcrypt'
 require_relative 'post'
+require_relative 'comment'
 
 class User < ActiveRecord::Base
   include BCrypt
 
+  has_many :comments , dependent: :destroy
   has_many :posts , dependent: :destroy
 
   validates :username,
