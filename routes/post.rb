@@ -1,5 +1,9 @@
 get "/createPost" do
-  erb :createPost
+  if session[:loginUser] && session[:loginUser].isAdmin == 1
+    erb :createPost
+  else
+    redirect '/'
+  end
 end 
 
 get "/posts/:readPost" do
@@ -7,22 +11,43 @@ get "/posts/:readPost" do
   erb :readPost
 end 
 
-get "/changePostStatus/*" do 
+get "/editPost/*" do
+  if session[:loginUser] && session[:loginUser].isAdmin == 1
+    @receiveID = params['splat'][0].to_i
+    erb :editPost
+  else
+    redirect '/'
+  end
+end 
+
+get "/editComment/*" do
+  if session[:loginUser]  &&
+    (session[:loginUser].isAdmin==1 || 
+    (session[:loginUser].comments.find_by_id e.id)) 
+    @receiveID = params['splat'][0].to_i
+    erb :editComment
+  else
+    redirect '/'
+  end
+end 
+
+post "/changePostStatus/*" do 
   @id = params['splat'][0].to_i
-  post = Post.find_by_id(@id)
-  post.changeStutus
-  post.save
+  o = Post.find_by_id(@id)
+  o.changeStutus
+  o.save
   redirect '/'
 end
 
-get "/editPost/*" do
- @receiveID = params['splat'][0].to_i
-  erb :editPost
-end 
-
-get "/deletePost/*" do
+post "/deletePost/*" do
   @id2 = params['splat'][0].to_i
   Post.destroy(@id2)
+  redirect '/'
+end
+
+post "/deleteComment/*" do
+  @id2 = params['splat'][0].to_i
+  Comment.destroy(@id2)
   redirect '/'
 end
 
@@ -48,10 +73,11 @@ post "/upload" do
   else
     flash[:error] = "Съобщението съдържа грешки: #{newPost.errors.full_messages.to_sentence}"
   end
+  user.posts<<newPost
   redirect '/'
 end
 
-post "/*" do 
+post "/editPost/*" do 
   @id = params['splat'][0].to_i
   if params['pic']
     extension=params['pic'][:filename].split('.')[-1] 
@@ -64,5 +90,22 @@ post "/*" do
     imageName = Post.find_by_id(@id).imagePath
   end
   Post.find_by_id(@id).update(subject: params[:subject], theme:params[:theme], imagePath:imageName)
+  redirect '/'
+end
+
+post "/addComment/*" do 
+  comment = Comment.create content: params[:content] , published: DateTime.now
+  currentPost = Post.find_by_id(params['splat'][0].to_i)
+  currentPost.comments<<comment 
+  session[:loginUser].comments<<comment 
+  currentPost.save
+  redirect '/'
+end
+
+post "/editComment/*" do 
+  @id = params['splat'][0].to_i
+  comment = Comment.find_by_id(@id)
+  comment.content = params[:content]
+  comment.save
   redirect '/'
 end

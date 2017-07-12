@@ -3,11 +3,14 @@ require 'sinatra/activerecord'
 require "thin"
 require "sinatra/flash"
 
+require_relative "routes/main"
+require_relative "routes/account"
+require_relative "routes/post"
 require_relative "models/post"
 require_relative "models/tag"
 require_relative "models/tagging"
 require_relative "models/user"
-require_relative "routes/main"
+require_relative "models/comment"
 configure do
   enable :sessions
   set :root, __dir__

@@ -1,21 +1,20 @@
 require_relative "account"
 require_relative "post"
 
-
 get '/' do
   @sortBy = if !session[:sort] then :id else session[:sort].to_sym end
   @showOnly = session[:tag]
   @allposts = if !@showOnly || @showOnly=="" 
-    Post.all.sort_by &@sortBy
+  Post.all.sort_by &@sortBy
   else 
     Post.tagged_with(@showOnly).sort_by &@sortBy
   end
-  
+
   Tag.clear_unused
   erb :main
 end
 
-get "/tag/*" do
+post "/tag/*" do
   if params['splat'][0] 
     session[:tag] = params['splat'][0] 
   else 
@@ -24,7 +23,7 @@ get "/tag/*" do
   redirect '/'
 end
 
-get "/sort/*" do
+post "/sort/*" do
   session[:sort] = params['splat'][0]
   redirect '/'
 end

@@ -52,6 +52,10 @@ class Post < ActiveRecord::Base
       size = match[0].length.to_s
       str2[match[0]+match[1]]="<h" + size + ">" + match[1] + "</h" + size + ">"
     end
+
+    str1=str2.dup
+    str1.scan(/\n+/){|match| str2[match]="<br>"}
+    
     # (CGI.escapeHTML self.theme).to_s.scan(/_\w+_/) { |match| answer[match]="<i>"+match[1..-2]+"</i>"}
     # (CGI.escapeHTML self.theme).to_s.scan(/__\w+__/) { |match| answer[match]="<b>"+match[2..-3]+"</b>"}
     str2

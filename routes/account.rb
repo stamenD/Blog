@@ -6,9 +6,8 @@ get "/login" do
   erb :login
 end 
 
-get "/logout" do
-  session[:loginUser] = false
-  redirect '/'
+get "/allUsers" do
+  erb :allUsers
 end 
 
 post "/createProfile" do 
@@ -24,7 +23,6 @@ post "/createProfile" do
   end
 end
 
-
 post "/login" do 
   @loginUser = User.find_by_username params[:username]
   if !@loginUser
@@ -38,4 +36,16 @@ post "/login" do
     flash[:error] = "Неправилна парола!"
     redirect '/login'
   end
+end
+
+post "/logout" do
+  session[:loginUser] = false
+  redirect '/'
+end 
+
+post "/makeAdmin/*" do
+  a = User.find_by_id(params['splat'][0].to_i)
+  a.isAdmin=1
+  a.save
+  redirect '/'
 end

@@ -1,0 +1,65 @@
+<body style="background-color:DarkGrey ;">
+
+
+<% @id = if !session[:loginUser] then -1 else session[:loginUser].id end%> 
+  
+
+<% if User.all.empty? %>
+  <i>doesn't exist comments</i>
+<% else %>
+  <table class="w3-table w3-striped w3-border">
+    <tr class="w3-green">
+      <th>Username
+      </th>
+      
+      <th>amount of comments
+      </th>
+      
+      <th>amount of posts
+      </th>
+
+       <th>status
+      </th>
+    </tr>
+  <% User.all.each do |e|%> 
+    <tr>
+      <th>
+      <%= e.username%>
+      </th>
+      
+      <th>
+      <%= e.comments.size%>
+      </th>
+      
+      <th>
+      <%= e.posts.size%>
+      </th>
+
+      <th>
+      <%if e.isAdmin== 1%>
+        ADMIN
+      <%else%>
+        <div style="float:left;" >USER </div>
+      <%if session[:loginUser] && session[:loginUser].isAdmin == 1 && e.isAdmin == 0 %>
+
+        <form action=<%="/makeAdmin/"+e.id.to_s%> method="post">
+        <div style="float:right;"> 
+        <button type="submit">Make admin</button> 
+        </div>
+        <div style="clear: left;"/>
+        </form>   
+        <br>
+      <%end%>
+      <% end %>
+      </th>  
+    </tr>  
+  <%end%>
+<%end%>
+  </table>
+  <br>
+
+<center>
+<form action="/" method="get" enctype="multipart/form-data">
+  <button type="submit" class="w3-button w3-ripple w3-yellow w3-small w3-round-xlarge">Main page</button> 
+</form> 
+</center>  
