@@ -1,48 +1,75 @@
 <body style="background-color:#A852FF;">
-      
+  
+<% I18n.locale = @language%>
+
+<!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->                                                                                      
+<!-- Съобщения -->
+<% if flash[:success] %>
+    <p class="bg-success"><%= flash[:success] %></p>
+<% end %>
+
+<% if flash[:error] %>
+    <p class="bg-danger"><%= flash[:error] %></p>
+<% end %>
+
+<!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->                                                                                            
+<!-- Езици -->
+
+<div class="w3-container ">
+<% I18n.load_path.map { |e| e.split('/')[-1].split('.')[0] }.select { |e| e!= @language.to_s}.each do |e|%>
+<form action=<%="/language/"+e.to_s%> method="post">
+  <button type="submit" class="w3-right w3-btn w3-red w3-hover-blue w3-round-xxlarge w3-small" style="right: 50px;"><%= e%></button> 
+</form>
+<%end%>
+</div>
+
+<!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->                                                                                              
 <!-- Ако си логнат  -->
 
 <%if session[:loginUser] %>
   <div class="w3-bar w3-green"> 
-    <p class="w3-bar-item" "><b>wellcome, <%= session[:loginUser].username %>!</b></p><br>
+    <p class="w3-bar-item" "><b><%=I18n.t("wellcome") %>, <%= session[:loginUser].username %>!</b></p><br>
     <%if session[:loginUser].isAdmin == 1%>   
       <form action="/createPost" method="get" enctype="multipart/form-data">
-        <button class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit">Create new post</button> 
+        <button class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit"><%=I18n.t("create new post") %></button> 
       </form> 
     <%end%>
 
     <form action="/allUsers" method="get" enctype="multipart/form-data" >
-      <button type="submit" class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small "  >all users</button> 
+      <button type="submit" class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small "  ><%=I18n.t("all users") %></button> 
      </form>
 
     <form action="/logout" method="post">
-      <button class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit">logout</button> 
+      <button class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit"><%=I18n.t("logout") %></button> 
     </form> 
   </div>
-
-
+                                                                                    
 <!-- Ако не си логнат  -->
 <%else%>  
   <div class="w3-bar w3-green"> 
-    <p class="w3-bar-item" "><b>wellcome!</b></p><br>
+    <p class="w3-bar-item" "><b><%=I18n.t("wellcome") %>!</b></p><br>
 
     <form action="/login" method="get" enctype="multipart/form-data">
-      <button class="w3-right w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit">login</button> 
+      <button class="w3-right w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit"><%=I18n.t("login") %></button> 
     </form>
 
     <form action="/register" method="get" enctype="multipart/form-data">
-      <button class="w3-right w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small" type="submit">create account</button> 
+      <button class="w3-right w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small" type="submit"><%=I18n.t("create account") %></button> 
     </form>
   </div>
 <%end %>
 
 
+<!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->       
+<br><br><br>
+<h1 style=" text-align: center; font-family: Comic Sans MS; " class="w3-myfont"><%=I18n.t("posts") %>:</h1>
+                                                                                      
 <!-- Тагове  -->
-<i>tags</i>
+<i><%=I18n.t("tags") %>:</i>
 <table>
   <tr>
     <form action="/tag/" method="post"> 
-      <button type="submit" class="w3-tag w3-round w3-green w3-border w3-border-white"><b>all</b></button> 
+      <button type="submit" class="w3-tag w3-round w3-green w3-border w3-border-white"><b><%=I18n.t("all") %></b></button> 
     </form>
     <% Tag.all.select{ |e| e.posts.any? { |p| p.isActive == 1 }}.each do |e|%>
       <form action=<%="/tag/"+e.name.to_s%> method="post"> 
@@ -53,16 +80,18 @@
 </table>
 
 
+<!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->       
+
 <!-- Сортировки  -->
-<i>sort by:</i>     
+<i><%=I18n.t("sort by") %>:</i>     
 <table>
   <tr>
     <form action="/sort/comments_number" method="post"> 
-      <button class="w3-btn w3-yellow w3-border w3-round-large" type="submit">amount of comments</button> 
+      <button class="w3-btn w3-yellow w3-border w3-round-large" type="submit"><%=I18n.t("amount of comments") %></button> 
     </form>
   
     <form action="/sort/published" method="post"> 
-      <button class="w3-btn w3-yellow w3-border w3-round-large" type="submit">published</button> 
+      <button class="w3-btn w3-yellow w3-border w3-round-large" type="submit"><%=I18n.t("published") %></button> 
     </form>
   </tr>
 </table>
@@ -70,42 +99,43 @@
 <!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->    
 <!-- ПУБЛИКАЦИИТЕ -->
 
-<h4>(with tag : 
+<h4>(<%=I18n.t("with tag") %> : 
   <% if @showOnly == "" || !@showOnly%>
-    it's not specifield
+    <%=I18n.t("it's not specifield")%>
   <%else @showOnly%>
     <%= @showOnly%>
   <% end %>)             
 </h4><hr>
 
 <% if @allposts.empty? %>
-  <i>doesn't exist posts</i>
+  <i><%=I18n.t("doesn't exist posts") %></i>
 <% else %>
   <% @allposts.reverse.each do |e| %>
   <center>
   <%if e.isActive == 1 || (e.isActive == 0  && (session[:loginUser]  && session[:loginUser].isAdmin==1) )%>
     <%if e.isActive == 0%> <span style="color: yellow"><b>It's not active!</b></span> <%end%><br>
-    <b>published at:</b><%= e.published %><br>
-    <b>subject:</b><%= e.subject%><br>
+    <b><%=I18n.t("published at") %>:</b><%= e.published %><br>
+    <b><%=I18n.t("subject") %>:</b><%= e.subject%><br>
     <b>Tags:</b><%= e.all_tags %><br>
     <img src=<%= e.imagePath%> style="width:128px;height:128px;"><br>
+    <b><%=I18n.t("amount of comments") %>:</b><%=e.comments_number%><br>
         <form action=<%="/posts/"+e.id.to_s%> method="get" enctype="multipart/form-data"> 
-        <button type="submit" class="w3-button w3-ripple w3-yellow w3-small"><b>Read</b></button> 
+        <button type="submit" class="w3-button w3-ripple w3-yellow w3-small"><b><%=I18n.t("Read") %></b></button> 
         </form>
     
     <%if session[:loginUser]  && session[:loginUser].isAdmin==1 %>
       <table>
       <tr>
         <form action=<%="/editPost/"+e.id.to_s%> method="get" enctype="multipart/form-data"> 
-        <button type="submit" class="w3-button w3-ripple w3-green w3-small"><b>edit</b></button> 
+        <button type="submit" class="w3-button w3-ripple w3-green w3-small"><b><%=I18n.t("edit") %></b></button> 
         </form>
     
         <form action=<%="/deletePost/"+e.id.to_s%> method="post"> 
-        <button type="submit" class="w3-button w3-ripple w3-green w3-small"><b>delete</b></button> 
+        <button type="submit" class="w3-button w3-ripple w3-green w3-small"><b><%=I18n.t("delete") %></b></button> 
         </form>
     
         <form action=<%="/changePostStatus/"+e.id.to_s%> method="post"> 
-        <button type="submit" class="w3-button w3-small w3-ripple w3-green"><b>changeStatus</b></button> 
+        <button type="submit" class="w3-button w3-small w3-ripple w3-green"><b><%=I18n.t("changeStatus") %></b></button> 
         </form>
     
       </tr>  

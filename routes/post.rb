@@ -1,4 +1,5 @@
 get "/createPost" do
+  @language = findLanguage
   if session[:loginUser] && session[:loginUser].isAdmin == 1
     erb :createPost
   else
@@ -7,11 +8,13 @@ get "/createPost" do
 end 
 
 get "/posts/:readPost" do
+  @language = findLanguage
   @receiveID = params[:readPost]
   erb :readPost
 end 
 
 get "/editPost/*" do
+  @language = findLanguage
   if session[:loginUser] && session[:loginUser].isAdmin == 1
     @receiveID = params['splat'][0].to_i
     erb :editPost
@@ -21,6 +24,7 @@ get "/editPost/*" do
 end 
 
 get "/editComment/*" do
+  @language = findLanguage
   if session[:loginUser]  &&
     (session[:loginUser].isAdmin==1 || 
     (session[:loginUser].comments.find_by_id e.id)) 

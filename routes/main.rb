@@ -1,7 +1,15 @@
 require_relative "account"
 require_relative "post"
 
+helpers do
+  def findLanguage
+    if !session[:language] then  @env["HTTP_ACCEPT_LANGUAGE"][0,2] else session[:language].to_sym end 
+  end
+end
+
 get '/' do
+	# session.clear
+  @language = findLanguage
   @sortBy = if !session[:sort] then :id else session[:sort].to_sym end
   @showOnly = session[:tag]
   @allposts = if !@showOnly || @showOnly=="" 
@@ -25,5 +33,10 @@ end
 
 post "/sort/*" do
   session[:sort] = params['splat'][0]
+  redirect '/'
+end
+
+post "/language/*" do
+  session[:language] = params['splat'][0]
   redirect '/'
 end

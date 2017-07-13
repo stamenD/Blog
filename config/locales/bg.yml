@@ -1,0 +1,35 @@
+bg:
+  welcome: Добре дошли
+  Read: Прочети
+  status: Статус
+  login: Вход
+  Main page: Обратно
+  Username: Потребителско име
+  all users: Всички потрибители
+  changeStatus: покажи/скрий
+  logout: Изход
+  Password: Парола
+  forgotPassword: Забравена парола
+  create new post: Създай нова публикация
+  create account: Създай профил
+  create: Създай
+  edit post: Редактирай публикацията
+  post : Публикувай
+  re-post : Ре-Публикувай
+  tags : Тагове
+  all  : всички
+  posts: Публикации 
+  with tag: с таг
+  it's not specifield: не е специфициран
+  sort by: Сортирай по
+  amount of comments: Брой коментари
+  amount of posts: Брой статии
+  published: дата на публикуване
+  doesn't exist posts: Няма публикации
+  subject: Заглавие
+  published at: Публикувано на
+  text: Текст
+  doesn't exist comments: Няма коментари
+  add comment: Добави коментар
+  edit: редактирай
+  delete: изтрий

@@ -21,8 +21,7 @@ class User < ActiveRecord::Base
   inclusion: { in: [0, 1] }
 
   def password
-    116
-    # @pass ||= Password.new(self.password_hash)
+    @pass ||= Password.new(self.password_hash)
   end
 
   def password=(new_password)

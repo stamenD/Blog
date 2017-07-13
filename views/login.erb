@@ -1,4 +1,5 @@
 <body style="background-color:DarkGrey ;">
+<% I18n.locale = @language%>
 <% if flash[:success] %>
     <p class="bg-success"><%= flash[:success] %></p>
 <% end %>
@@ -9,19 +10,19 @@
 
 <div class="w3-card-4">
   <div class="w3-container w3-brown">
-    <h2>login</h2>
+    <h2><%=I18n.t("login") %></h2>
   </div>
 <form action="/login" method="post" enctype="multipart/form-data">
     <p>      
-    <label class="w3-label w3-text-brown"><b>Username</b></label>
+    <label class="w3-label w3-text-brown"><b><%=I18n.t("Username") %></b></label>
     <input class="w3-input w3-border w3-sand" name="username" type="text"></p>
     <p>      
-    <label class="w3-label w3-text-brown"><b>Password</b></label>
+    <label class="w3-label w3-text-brown"><b><%=I18n.t("Password") %></b></label>
     <input class="w3-input w3-border w3-sand" name="password" type="password"></p>
     <p>
-    <center><button type="submit" class="w3-btn w3-brown">login</button></center></p>
+    <center><button type="submit" class="w3-btn w3-brown"><%=I18n.t("login") %></button></center></p>
   </form>
   <form action="/forgotPassword" method="post" enctype="multipart/form-data">
-  <center><button type="submit" class="w3-btn w3-brown">forgotPassword</button></center>
+  <center><button type="submit" class="w3-btn w3-brown"><%=I18n.t("forgotPassword") %></button></center>
 </form>
 </div>

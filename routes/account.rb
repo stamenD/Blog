@@ -1,12 +1,15 @@
 get "/register" do
+  @language = findLanguage
   erb :registerMode
 end 
 
 get "/login" do
+  @language = findLanguage
   erb :login
 end 
 
 get "/allUsers" do
+  @language = findLanguage
   erb :allUsers
 end 
 

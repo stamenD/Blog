@@ -1,0 +1,35 @@
+en:
+  logout: Logout
+  status: Status
+  Main page: Back
+  Read: Read
+  login: Login
+  wellcome: Wellcome
+  changeStatus: disable/enable
+  all users: All users
+  Username: Username
+  create new post: Create new post
+  Password: Password
+  forgotPassword: Forgot password
+  create account: Create account
+  create: Create  
+  amount of posts: A number of posts
+  edit post: Edit post
+  re-post: re-post
+  post : POST
+  tags : Tags
+  all  : all
+  posts: Posts
+  with tag: with tag 
+  it's not specifield: it's not specifield
+  sort by: Sort by
+  amount of comments: A number of comments
+  published: published at 
+  doesn't exist posts: There are no posts
+  subject: subject
+  published at: published at
+  text: text
+  doesn't exist comments: There are no comments
+  add comment: add comment
+  edit: edit
+  delete: delete
