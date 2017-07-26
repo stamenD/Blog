@@ -1,7 +1,7 @@
 <body style="background-color:#A852FF;">
   
 <% I18n.locale = @language%>
-
+<%= session.to_a %>
 <!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->                                                                                      
 <!-- Съобщения -->
 <% if flash[:success] %>
@@ -28,7 +28,7 @@
 
 <%if session[:loginUser] %>
   <div class="w3-bar w3-green"> 
-    <p class="w3-bar-item" "><b><%=I18n.t("wellcome") %>, <%= session[:loginUser].username %>!</b></p><br>
+    <p class="w3-bar-item" "><b><%=I18n.t("welcome") %>, <%= session[:loginUser].token %>!</b></p><br>
     <%if session[:loginUser].isAdmin == 1%>   
       <form action="/createPost" method="get" enctype="multipart/form-data">
         <button class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit"><%=I18n.t("create new post") %></button> 
@@ -47,7 +47,7 @@
 <!-- Ако не си логнат  -->
 <%else%>  
   <div class="w3-bar w3-green"> 
-    <p class="w3-bar-item" "><b><%=I18n.t("wellcome") %>!</b></p><br>
+    <p class="w3-bar-item" "><b><%=I18n.t("welcome") %>!</b></p><br>
 
     <form action="/login" method="get" enctype="multipart/form-data">
       <button class="w3-right w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit"><%=I18n.t("login") %></button> 

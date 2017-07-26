@@ -3,22 +3,33 @@ get "/createPost" do
   if session[:loginUser] && session[:loginUser].isAdmin == 1
     erb :createPost
   else
+    flash[:error] = "Нямаш достъп до тази страница"
     redirect '/'
   end
 end 
 
 get "/posts/:readPost" do
-  @language = findLanguage
-  @receiveID = params[:readPost]
-  erb :readPost
+  if Post.find_by_id(params[:readPost])
+    @language = findLanguage
+    @receiveID = params[:readPost]
+    erb :readPost
+  else 
+    flash[:error] = "Нямаш достъп до тази страница"
+    redirect '/'
+  end
 end 
 
 get "/editPost/*" do
   @language = findLanguage
   if session[:loginUser] && session[:loginUser].isAdmin == 1
     @receiveID = params['splat'][0].to_i
+    unless Post.find_by_id(@receiveID)
+      flash[:error] = "Не съществува тази страница"
+      redirect '/'   
+    end     
     erb :editPost
   else
+    flash[:error] = "Нямаш достъп до тази страница"
     redirect '/'
   end
 end 
@@ -29,8 +40,13 @@ get "/editComment/*" do
     (session[:loginUser].isAdmin==1 || 
     (session[:loginUser].comments.find_by_id e.id)) 
     @receiveID = params['splat'][0].to_i
+    unless Comment.find_by_id(@receiveID)
+      flash[:error] = "Не съществува тази страница"
+      redirect '/'   
+    end    
     erb :editComment
   else
+    flash[:error] = "Нямаш достъп до тази страница"
     redirect '/'
   end
 end 
@@ -59,7 +75,7 @@ post "/upload" do
   user = session[:loginUser]
   newPost = Post.create subject: params[:subject], theme:params[:theme] , published: DateTime.now ,isActive: 1
   if params['pic']
-    extension=params['pic'][:filename].split('.')[-1]
+    extension = params['pic'][:filename].split('.')[-1]
     imageName = newPost.id.to_s + '.' + extension
     imagePath = 'public/' + imageName    
     File.open(imagePath, "wb") do |f|
@@ -84,7 +100,7 @@ end
 post "/editPost/*" do 
   @id = params['splat'][0].to_i
   if params['pic']
-    extension=params['pic'][:filename].split('.')[-1] 
+    extension = params['pic'][:filename].split('.')[-1] 
     imageName = params['splat'][0].to_s[0..-2] + '.' + extension
     imagePath = 'public/' + imageName
     File.open(imagePath, "wb") do |f|
@@ -93,6 +109,7 @@ post "/editPost/*" do
   else
     imageName = Post.find_by_id(@id).imagePath
   end
+  Post.find_by_id(@id).all_tags = params[:tags]
   Post.find_by_id(@id).update(subject: params[:subject], theme:params[:theme], imagePath:imageName)
   redirect '/'
 end

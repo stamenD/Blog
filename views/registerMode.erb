@@ -13,14 +13,18 @@
   <div class="w3-container w3-brown">
     <h2><%=I18n.t("create account") %></h2>
   </div>
- <form action="/createProfile" method="post" enctype="multipart/form-data">
+ <form action="/createProfile" onsubmit="return checkRegister()" method="post" enctype="multipart/form-data">
     <p>      
     <label class="w3-label w3-text-brown"><b><%=I18n.t("Username") %></b></label>
-    <input class="w3-input w3-border w3-sand" name="username" type="text"></p>
+    <input class="w3-input w3-border w3-sand" name="username" type="text" required="true" id="username" onkeyup="checkRegister()"></p>
     <p>      
     <label class="w3-label w3-text-brown"><b><%=I18n.t("Password") %></b></label>
-    <input class="w3-input w3-border w3-sand" name="password" type="password"></p>
+    <input class="w3-input w3-border w3-sand" name="password" type="password" id="password" required="true" onkeyup="checkRegister()"></p>
+    <p>
+    <label class="w3-label w3-text-brown"><b><%=I18n.t("mail") %></b></label>
+    <input class="w3-input w3-border w3-sand" name="mail" type="text"  id="mail" required="true" onkeyup="checkRegister()"></p>
     <p>
     <center><button type="submit" class="w3-btn w3-brown"><%=I18n.t("create") %></button></center></p>
   </form>
+      <p id='massage' ></p>
 </div>

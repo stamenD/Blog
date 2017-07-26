@@ -7,16 +7,21 @@ helpers do
   end
 end
 
+not_found do
+  'This is nowhere to be found.'
+end
+
 get '/' do
 	# session.clear
   @language = findLanguage
   @sortBy = if !session[:sort] then :id else session[:sort].to_sym end
   @showOnly = session[:tag]
   @allposts = if !@showOnly || @showOnly=="" 
-  Post.all.sort_by &@sortBy
+    Post.all.sort_by &@sortBy
   else 
     Post.tagged_with(@showOnly).sort_by &@sortBy
   end
+  @allposts = @allposts.reverse if session[:reverse]
 
   Tag.clear_unused
   erb :main
@@ -28,11 +33,13 @@ post "/tag/*" do
   else 
     session[:tag] = false
   end
+  session[:reverse] = if (session[:reverse] == false ||  session[:reverse] == true) then !session[:reverse] else false end
   redirect '/'
 end
 
 post "/sort/*" do
   session[:sort] = params['splat'][0]
+  session[:reverse] = if (session[:reverse] == false ||  session[:reverse] == true) then !session[:reverse] else false end
   redirect '/'
 end
 

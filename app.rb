@@ -4,6 +4,8 @@ require "thin"
 require "sinatra/flash"
 require 'i18n'
 require 'i18n/backend/fallbacks'
+require "pony"
+require 'bcrypt'
 
 require_relative "routes/main"
 require_relative "routes/account"

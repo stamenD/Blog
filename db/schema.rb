@@ -13,21 +13,21 @@
 ActiveRecord::Schema.define(version: 20170711155921) do
 
   create_table "comments", force: :cascade do |t|
-    t.text     "content"
+    t.text "content"
     t.datetime "published"
-    t.integer  "post_id"
-    t.integer  "user_id"
+    t.integer "post_id"
+    t.integer "user_id"
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
-    t.string   "subject",   null: false
-    t.text     "theme",     null: false
-    t.string   "imagePath"
-    t.integer  "isActive"
+    t.string "subject", null: false
+    t.text "theme", null: false
+    t.string "imagePath"
+    t.integer "isActive"
     t.datetime "published"
-    t.integer  "user_id"
+    t.integer "user_id"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -43,8 +43,10 @@ ActiveRecord::Schema.define(version: 20170711155921) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string  "username",      null: false
-    t.string  "password_hash", null: false
+    t.string "username", null: false
+    t.string "password_hash", null: false
+    t.string "mail", null: false
+    t.string "token"
     t.integer "isAdmin"
   end
 

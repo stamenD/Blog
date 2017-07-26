@@ -1,4 +1,5 @@
 en:
+  welcome: Welcome
   logout: Logout
   status: Status
   Main page: Back
@@ -33,3 +34,7 @@ en:
   add comment: add comment
   edit: edit
   delete: delete
+  changePassword: Change password
+  repeat password: Repeat password
+  send: Send
+  mail: E-mail

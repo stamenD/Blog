@@ -1,17 +1,17 @@
 <body style="background-color:DarkGrey ;">
 
 <% I18n.locale = @language%>
-
+<% post = Post.find_by_id(@receiveID)%>
 
 <div class="w3-card-4">
 <div class="w3-container w3-green">
   <h2><%=I18n.t("edit post") %></h2>
 </div>
 <form action=<%="/editPost/" + @receiveID.to_s %> method="post" enctype="multipart/form-data" class="w3-container">
-  <input class="w3-input w3-border" type="text" name="subject" placeholder="Subject" value=<%= Post.find_by_id(@receiveID).subject%>>
-  <input class="w3-input w3-border" type="text" name="tags" placeholder="Add tags (Ex. music , sport)" value=<%= Post.find_by_id(@receiveID).all_tags%>>
-  <textarea class="w3-input w3-border" name="theme" placeholder="Theme" rows="10" cols="50"><%= Post.find_by_id(@receiveID).theme%></textarea>
-  <input name="pic" type="file" accept="image/*" src=<%= Post.find_by_id(@receiveID).imagePath%>>
+  <input class="w3-input w3-border" type="text" name="subject" placeholder="Subject" value=<%= post.subject.to_s%>>
+  <input class="w3-input w3-border" type="text" name="tags" placeholder="Add tags (Ex. music , sport)" value="<%=post.all_tags%>">
+  <textarea class="w3-input w3-border" name="theme" placeholder="Theme" rows="10" cols="50"><%= post.theme%></textarea>
+  <input name="pic" type="file" accept="image/*" src=<%= post.imagePath%>>
  
   <button type="submit"><%=I18n.t("re-post") %></button> 
 </form>
