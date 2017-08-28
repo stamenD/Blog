@@ -1,30 +1,60 @@
 get "/register" do
   @language = findLanguage
-  erb :registerMode
+  if !session[:loginUser]
+     erb :registerMode
+  else
+    flash[:error] = "Нямаш достъп до тази страница"
+    session[:status] = 401
+    redirect '/'
+  end
 end 
 
 get "/login" do
   @language = findLanguage
-  erb :login
+  if !session[:loginUser]
+     erb :login
+  else
+    flash[:error] = "Нямаш достъп до тази страница"
+    session[:status] = 401
+    redirect '/'
+  end 
 end 
 
 get "/forgotPassword" do
   @language = findLanguage
-  erb :forgotPassword
+  if !session[:loginUser]
+    erb :forgotPassword
+  else
+    flash[:error] = "Нямаш достъп до тази страница"
+    session[:status] = 401
+    redirect '/'
+  end 
 end 
 
 get "/allUsers" do
   @language = findLanguage
-  erb :allUsers
+  if session[:loginUser]
+    erb :allUsers
+  else
+    flash[:error] = "Нямаш достъп до тази страница"
+    session[:status] = 401
+    redirect '/'
+  end 
 end 
 
 get "/newPassword" do
   @language = findLanguage
-  if User.find_by_token(params[:token])
-    @receiveID = User.find_by_token(params[:token]).id
-    erb :newPassword 
+  if !session[:loginUser]
+    if User.find_by_token(params[:token])
+      @receiveID = User.find_by_token(params[:token]).id
+      erb :newPassword 
+    else
+      flash[:error] = "Невалиден token"
+      redirect '/'
+    end 
   else
-    flash[:error] = "Невалиден token"
+    flash[:error] = "Нямаш достъп до тази страница"
+    session[:status] = 401
     redirect '/'
   end 
 end
@@ -33,13 +63,15 @@ end
 post "/createProfile" do 
   newUser = User.new username: params[:username],mail: params[:mail], isAdmin: 0 
   newUser.password= params[:password]
- 
+  newUser.token = SecureRandom.urlsafe_base64
+
   if newUser.save
     flash[:success] = 'Регистрирахте се успешно!'
+    status 200
     redirect '/'
   else
-    flash[:error] = "#{newUser.errors.full_messages.to_sentence}"
-    redirect '/register'
+    # flash[:error] = "#{newUser.errors.full_messages.to_sentence}"
+    halt 403, "#{newUser.errors.full_messages.to_sentence}"
   end
 end
 
@@ -47,13 +79,16 @@ post "/login" do
   @loginUser = User.find_by_username params[:username]
   if !@loginUser
     flash[:error] = "Не съществува такова потребителстко име!"
+    # status 401
     redirect '/login'  
   elsif @loginUser.password == params[:password]
     flash[:success] = "Влязохте успешно"
+    status 200
     session[:loginUser] = @loginUser
     redirect '/'
   else
     flash[:error] = "Неправилна парола!"
+    # status 401
     redirect '/login'
   end
 end
@@ -106,7 +141,7 @@ end
 
 post "/makeAdmin/*" do
   a = User.find_by_id(params['splat'][0].to_i)
-  a.isAdmin=1
+  a.isAdmin = 1
   a.save
   redirect '/'
 end

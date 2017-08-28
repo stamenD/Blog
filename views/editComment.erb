@@ -3,6 +3,6 @@
 <% I18n.locale = @language%>
 
  <form action=<%="/editComment/" + @receiveID.to_s %> method="post" enctype="multipart/form-data">
-    <textarea name="content" placeholder="Добави коментар" rows="2" cols="50" class="w3-input  w3-animate-input w3-border w3-round-large" style="width:30%"><%= Comment.find_by_id(@receiveID).content%></textarea>
-    <button class="w3-button w3-hover-blue w3-round-xlarge w3-small" type="submit"><%=I18n.t("re-post") %></button> 
+    <textarea name="content" placeholder="Добави коментар" rows="2" cols="50" class="w3-input  w3-animate-input w3-border w3-round-large" style="width:30%" id="comment"><%= Comment.find_by_id(@receiveID).content%></textarea>
+    <button class="w3-button w3-hover-blue w3-round-xlarge w3-small" type="submit" id="re-post"><%=I18n.t("re-post") %></button> 
  </form> 

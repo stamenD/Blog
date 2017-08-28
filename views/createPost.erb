@@ -7,12 +7,12 @@
   <h2><%=I18n.t("create new post") %></h2>
 </div>
 <form action="/upload" method="post" enctype="multipart/form-data" class="w3-container">
-  <input class="w3-input w3-border" type="text" name="subject" placeholder="Subject" required="true">
-  <input class="w3-input w3-border" type="text" name="tags" placeholder="Add tags (Ex. music , sport)">
-  <textarea class="w3-input w3-border" name="theme" placeholder="Theme" rows="10" cols="50"></textarea>
+  <input class="w3-input w3-border" id="subject" type="text" name="subject" placeholder="Subject" required="true">
+  <input class="w3-input w3-border" type="text" name="tags" id="tags" placeholder="Add tags (Ex. music , sport)">
+  <textarea class="w3-input w3-border" name="theme" id="theme" placeholder="Theme" rows="10" cols="50"></textarea>
   <input name="pic" type="file" accept="image/*">
   
-  <button type="submit"><%=I18n.t("post") %></button> 
+  <button type="submit" id="post"><%=I18n.t("post") %></button> 
 </form>
 
 </div>

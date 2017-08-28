@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20170711155921) do
     t.text "theme", null: false
     t.string "imagePath"
     t.integer "isActive"
+    t.string "language"
     t.datetime "published"
     t.integer "user_id"
     t.index ["user_id"], name: "index_posts_on_user_id"

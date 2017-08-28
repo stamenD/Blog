@@ -40,7 +40,7 @@
           </form>
 
           <form action=<%="/deleteComment/"+e.id.to_s%> method="post"> 
-          <button class="w3-button w3-hover-red w3-round-xlarge w3-small" type="submit"><%=I18n.t("delete") %></button> 
+          <button class="w3-button w3-hover-red w3-round-xlarge w3-small" type="submit" id="delete"><%=I18n.t("delete") %></button> 
           </form>
         </tr>  
         </table>  
@@ -49,9 +49,9 @@
   <%end%> 
   <br><br><br>
 <%if session[:loginUser] %>  
-    <form action=<%="/addComment/"+post.id.to_s%> method="post" enctype="multipart/form-data">
-    <textarea name="content" placeholder="Добави коментар" rows="2" cols="50" class="w3-input  w3-animate-input w3-border w3-round-large" style="width:30%"></textarea>
-    <button class="w3-button w3-hover-blue w3-round-xlarge w3-small" type="submit"><%=I18n.t("add comment") %></button> 
+    <form action=<%="/addComment/"+post.id.to_s%> method="post" enctype="multipart/form-data" id="addComment">
+    <textarea name="content" id="comment" placeholder="Add comment" rows="2" cols="50" class="w3-input  w3-animate-input w3-border w3-round-large" style="width:30%"></textarea>
+    <button class="w3-button w3-hover-blue w3-round-xlarge w3-small" id="add comment" type="submit"><%=I18n.t("add comment") %></button> 
     </form> 
     <br><br>
 <%end%>

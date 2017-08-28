@@ -4,6 +4,7 @@ get "/createPost" do
     erb :createPost
   else
     flash[:error] = "Нямаш достъп до тази страница"
+    session[:status] = 401
     redirect '/'
   end
 end 
@@ -14,7 +15,8 @@ get "/posts/:readPost" do
     @receiveID = params[:readPost]
     erb :readPost
   else 
-    flash[:error] = "Нямаш достъп до тази страница"
+    flash[:error] = "Не съществува тази страница"
+    session[:status] = 401
     redirect '/'
   end
 end 
@@ -30,6 +32,7 @@ get "/editPost/*" do
     erb :editPost
   else
     flash[:error] = "Нямаш достъп до тази страница"
+    session[:status] = 401
     redirect '/'
   end
 end 
@@ -38,7 +41,7 @@ get "/editComment/*" do
   @language = findLanguage
   if session[:loginUser]  &&
     (session[:loginUser].isAdmin==1 || 
-    (session[:loginUser].comments.find_by_id e.id)) 
+    (session[:loginUser].comments.find_by_id params['splat'][0].to_i)) 
     @receiveID = params['splat'][0].to_i
     unless Comment.find_by_id(@receiveID)
       flash[:error] = "Не съществува тази страница"
@@ -47,6 +50,7 @@ get "/editComment/*" do
     erb :editComment
   else
     flash[:error] = "Нямаш достъп до тази страница"
+    session[:status] = 401
     redirect '/'
   end
 end 
@@ -84,6 +88,7 @@ post "/upload" do
   else
     imageName = "default.gif"
   end
+    newPost.language = session[:language]
     newPost.imagePath = imageName
     newPost.all_tags = params[:tags]
     newPost.save

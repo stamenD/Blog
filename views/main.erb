@@ -1,7 +1,7 @@
 <body style="background-color:#A852FF;">
   
 <% I18n.locale = @language%>
-<%= session.to_a %>
+<!-- <%= session.to_a %> -->
 <!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->                                                                                      
 <!-- Съобщения -->
 <% if flash[:success] %>
@@ -28,7 +28,7 @@
 
 <%if session[:loginUser] %>
   <div class="w3-bar w3-green"> 
-    <p class="w3-bar-item" "><b><%=I18n.t("welcome") %>, <%= session[:loginUser].token %>!</b></p><br>
+    <p class="w3-bar-item" "><b><%=I18n.t("welcome") %>, <%= session[:loginUser].username %>!</b></p><br>
     <%if session[:loginUser].isAdmin == 1%>   
       <form action="/createPost" method="get" enctype="multipart/form-data">
         <button class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit"><%=I18n.t("create new post") %></button> 
@@ -40,7 +40,7 @@
      </form>
 
     <form action="/logout" method="post">
-      <button class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " type="submit"><%=I18n.t("logout") %></button> 
+      <button class="w3-bar-item w3-btn w3-khaki w3-hover-blue w3-round-xxlarge w3-small " id="logout" type="submit"><%=I18n.t("logout") %></button> 
     </form> 
   </div>
                                                                                     
@@ -87,7 +87,7 @@
 <table>
   <tr>
     <form action="/sort/comments_number" method="post"> 
-      <button class="w3-btn w3-yellow w3-border w3-round-large" type="submit"><%=I18n.t("amount of comments") %></button> 
+      <button class="w3-btn w3-yellow w3-border w3-round-large" type="submit" id="amount of comments"><%=I18n.t("amount of comments") %></button> 
     </form>
   
     <form action="/sort/published" method="post"> 
@@ -114,33 +114,37 @@
   <center>
   <%if e.isActive == 1 || (e.isActive == 0  && (session[:loginUser]  && session[:loginUser].isAdmin==1) )%>
     <%if e.isActive == 0%> <span style="color: yellow"><b>It's not active!</b></span> <%end%><br>
-    <b><%=I18n.t("published at") %>:</b><%= e.published %><br>
-    <b><%=I18n.t("subject") %>:</b><%= e.subject%><br>
-    <b>Tags:</b><%= e.all_tags %><br>
-    <img src=<%= e.imagePath%> style="width:128px;height:128px;"><br>
-    <b><%=I18n.t("amount of comments") %>:</b><%=e.comments_number%><br>
-        <form action=<%="/posts/"+e.id.to_s%> method="get" enctype="multipart/form-data"> 
-        <button type="submit" class="w3-button w3-ripple w3-yellow w3-small"><b><%=I18n.t("Read") %></b></button> 
-        </form>
-    
+    <table>
+    <tr><td><center><b><%=I18n.t("published at") %>:</b><%= e.published %></center></td></tr>
+    <tr><td><center><b><%=I18n.t("subject") %>:</b><%= e.subject%></center></td></tr>
+    <tr><td><center><b>Tags:</b><%= e.all_tags %></center></td></tr>
+    <tr><td><center><img src=<%= e.imagePath%> style="width:128px;height:128px;"></center></td></tr>
+    <tr><td><center><b><%=I18n.t("amount of comments") %>:</b><%=e.comments_number%></center></td></tr>
+    <tr><td><center><form action=<%="/posts/"+e.id.to_s%> method="get" enctype="multipart/form-data">
+    <button type="submit" class="w3-button w3-ripple w3-yellow w3-small"><b><%=I18n.t("Read") %></b></button> 
+    </form></center></td></tr>    
+    </tr>
+    </table>
     <%if session[:loginUser]  && session[:loginUser].isAdmin==1 %>
-      <table>
+     <table> 
       <tr>
-        <form action=<%="/editPost/"+e.id.to_s%> method="get" enctype="multipart/form-data"> 
+
+        <td><form action=<%="/editPost/"+e.id.to_s%> method="get" enctype="multipart/form-data"> 
         <button type="submit" class="w3-button w3-ripple w3-green w3-small"><b><%=I18n.t("edit") %></b></button> 
-        </form>
+        </form></td>
     
-        <form action=<%="/deletePost/"+e.id.to_s%> method="post"> 
+        <td><form action=<%="/deletePost/"+e.id.to_s%> method="post"> 
         <button type="submit" class="w3-button w3-ripple w3-green w3-small"><b><%=I18n.t("delete") %></b></button> 
-        </form>
+        </form></td>
     
-        <form action=<%="/changePostStatus/"+e.id.to_s%> method="post"> 
+        <td><form action=<%="/changePostStatus/"+e.id.to_s%> method="post"> 
         <button type="submit" class="w3-button w3-small w3-ripple w3-green"><b><%=I18n.t("changeStatus") %></b></button> 
-        </form>
-    
-      </tr>  
-      </table>  
+        </form></td>
+
+       </tr>
+      </table> 
     <%end%>  
+
     </center>
 <hr>
   <%end%>

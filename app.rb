@@ -4,8 +4,10 @@ require "thin"
 require "sinatra/flash"
 require 'i18n'
 require 'i18n/backend/fallbacks'
+require "rack_session_access"
 require "pony"
 require 'bcrypt'
+
 
 require_relative "routes/main"
 require_relative "routes/account"
@@ -18,6 +20,7 @@ require_relative "models/comment"
 
 
 configure do
+  use RackSessionAccess::Middleware
   enable :sessions
   set :server, %w[thin]
   set :root, __dir__
@@ -25,3 +28,10 @@ configure do
   I18n.load_path = Dir["#{__dir__}/config/locales/*.yml"]
   I18n.backend.load_translations
 end
+
+
+#  a = User.first 
+#  a.isAdmin = 1
+#  a.save!
+
+# p User.all

@@ -20,7 +20,7 @@ class Post < ActiveRecord::Base
   end
 
   def all_tags= names
-    self.tags=names.split(',').map { |e|  Tag.where(name: e).first_or_create! }
+    self.tags=names.split(',').select{|e| e.lstrip!; e.rstrip!; e.empty? == false }.map { |e|  Tag.where(name: e).first_or_create! }
   end
 
   def all_tags
@@ -28,7 +28,9 @@ class Post < ActiveRecord::Base
   end
 
   def self.tagged_with(name)
-    Tag.find_by_name(name).posts
+    arr = Tag.find_by_name(name)
+    return [] if arr.class == NilClass
+    arr.posts
   end
 
   def print
@@ -55,9 +57,7 @@ class Post < ActiveRecord::Base
 
     str1=str2.dup
     str1.scan(/\n+/){|match| str2[match]="<br>"}
-    
-    # (CGI.escapeHTML self.theme).to_s.scan(/_\w+_/) { |match| answer[match]="<i>"+match[1..-2]+"</i>"}
-    # (CGI.escapeHTML self.theme).to_s.scan(/__\w+__/) { |match| answer[match]="<b>"+match[2..-3]+"</b>"}
+
     str2
   end
 end

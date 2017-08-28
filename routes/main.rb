@@ -3,23 +3,32 @@ require_relative "post"
 
 helpers do
   def findLanguage
-    if !session[:language] then  @env["HTTP_ACCEPT_LANGUAGE"][0,2] else session[:language].to_sym end 
+    # if !session[:language] then  @env["HTTP_ACCEPT_LANGUAGE"][0,2] else session[:language].to_sym end 
+    if !session[:language]
+      session[:language] = :en
+      :en
+   else 
+      session[:language].to_sym 
+   end 
   end
 end
 
 not_found do
-  'This is nowhere to be found.'
+  "Does not exist this page!"
 end
 
 get '/' do
+  status session[:status] if session[:status] 
+  status session[:status] = false
+
 	# session.clear
   @language = findLanguage
   @sortBy = if !session[:sort] then :id else session[:sort].to_sym end
   @showOnly = session[:tag]
   @allposts = if !@showOnly || @showOnly=="" 
-    Post.all.sort_by &@sortBy
+    Post.where(language: @language).sort_by &@sortBy
   else 
-    Post.tagged_with(@showOnly).sort_by &@sortBy
+    Post.tagged_with(@showOnly).where(language: @language).sort_by &@sortBy
   end
   @allposts = @allposts.reverse if session[:reverse]
 
